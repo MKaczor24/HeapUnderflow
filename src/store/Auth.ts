@@ -20,7 +20,7 @@ interface IAuthStore {
   verifySession(): Promise<void>;
   login(
     email: string,
-    password: string
+    password: string,
   ): Promise<{
     success: boolean;
     error?: AppwriteException | null;
@@ -28,7 +28,7 @@ interface IAuthStore {
   createAccount(
     name: string,
     email: string,
-    password: string
+    password: string,
   ): Promise<{
     success: boolean;
     error?: AppwriteException | null;
@@ -61,7 +61,7 @@ export const useAuthStore = create<IAuthStore>()(
         try {
           const session = await account.createEmailPasswordSession(
             email,
-            password
+            password,
           );
           const [user, jwtResp] = await Promise.all([
             account.get<UserPrefs>(),
@@ -71,7 +71,7 @@ export const useAuthStore = create<IAuthStore>()(
           if (user.prefs?.reputation == null) {
             const defaultPrefs: UserPrefs = {
               reputation: 0,
-              theme: "light",
+              theme: "dark",
               bio: "",
             };
             await account.updatePrefs<UserPrefs>(defaultPrefs);
@@ -113,6 +113,6 @@ export const useAuthStore = create<IAuthStore>()(
           state?.setHydrated();
         }
       },
-    }
-  )
+    },
+  ),
 );

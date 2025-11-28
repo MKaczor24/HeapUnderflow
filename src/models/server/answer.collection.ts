@@ -18,14 +18,14 @@ export default async function createAnswerCollection() {
       answerCollection,
       "content",
       10000,
-      true
+      true,
     ),
     databases.createStringAttribute(
       db,
       answerCollection,
       "questionId",
       50,
-      true
+      true,
     ),
     databases.createStringAttribute(db, answerCollection, "authorId", 50, true),
   ]);
