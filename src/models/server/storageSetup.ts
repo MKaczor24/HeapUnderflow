@@ -5,7 +5,7 @@ import { storage } from "./config";
 export default async function getOrCreateStorage() {
   try {
     await storage.getBucket(questionAttachmentBucket);
-    console.log("Storage Connected");
+    console.log("Question Attachment Storage Connected");
   } catch {
     try {
       await storage.createBucket(
@@ -21,13 +21,13 @@ export default async function getOrCreateStorage() {
         false,
         undefined,
         undefined,
-        ["jpg", "png", "gif", "jpeg", "webp", "heic"]
+        ["jpg", "png", "gif", "jpeg", "webp", "heic"],
       );
 
-      console.log("Storage Created");
-      console.log("Storage Connected");
+      console.log("Question Attachment Storage Created");
+      console.log("Question Attachment Storage Connected");
     } catch (error) {
-      console.error("Error creating storage:", error);
+      console.error("Error creating question attachment storage:", error);
     }
   }
 }

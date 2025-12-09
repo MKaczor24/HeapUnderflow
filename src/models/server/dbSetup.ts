@@ -1,6 +1,5 @@
 import { db } from "../name";
 import createAnswerCollection from "./answer.collection";
-import createCommentCollection from "./comment.collection";
 import createQuestionCollection from "./question.collection";
 import createVoteCollection from "./vote.collection";
 
@@ -17,7 +16,6 @@ export default async function getOrCreateDB() {
       await Promise.all([
         createQuestionCollection(),
         createAnswerCollection(),
-        createCommentCollection(),
         createVoteCollection(),
       ]);
       console.log("Collection created");

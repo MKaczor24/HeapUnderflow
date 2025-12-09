@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       await users.updatePrefs<UserPrefs>(QuestionOrAnswer.authorId, {
         ...authorPrefs,
         reputation:
-          response.documents[0].votesStatus === "upvoted"
+          response.documents[0].voteStatus === "upvoted"
             ? Number(authorPrefs?.reputation || 0) - 1
             : Number(authorPrefs?.reputation || 0) + 1,
       });
@@ -62,8 +62,8 @@ export async function POST(request: NextRequest) {
 
       const QuestionOrAnswer = await databases.getDocument(
         db,
-        voteCollection,
-        newVote.$id,
+        type === "question" ? questionCollection : answerCollection,
+        typeId,
       );
 
       const authorPrefs = await users.getPrefs<UserPrefs>(
@@ -71,12 +71,12 @@ export async function POST(request: NextRequest) {
       );
 
       if (response.documents[0]) {
-        await users.updatePrefs<UserPrefs>(QuestionOrAnswer.autorId, {
+        await users.updatePrefs<UserPrefs>(QuestionOrAnswer.authorId, {
           ...authorPrefs,
           reputation:
             voteStatus === "upvoted"
-              ? Number(authorPrefs?.reputation || 0) - 1
-              : Number(authorPrefs?.reputation || 0) + 1,
+              ? Number(authorPrefs?.reputation || 0) + 1
+              : Number(authorPrefs?.reputation || 0) - 1,
         });
       } else {
         await users.updatePrefs<UserPrefs>(QuestionOrAnswer.authorId, {
@@ -88,7 +88,6 @@ export async function POST(request: NextRequest) {
         });
       }
     }
-  }
 
     const [upvotes, downvotes] = await Promise.all([
       databases.listDocuments(db, voteCollection, [
