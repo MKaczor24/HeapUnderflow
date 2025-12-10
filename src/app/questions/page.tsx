@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import QuestionCard from "@/components/QuestionCard";
-import { ShineBorder } from "@/components/ui";
 import { QuestionWithDetails } from "@/models/types";
-import Link from "next/link";
 
 export default function QuestionsPage() {
   const searchParams = useSearchParams();
@@ -46,11 +44,7 @@ export default function QuestionsPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-8 flex items-center justify-between rounded-lg bg-neutral-50/10 px-4 py-2 shadow-lg backdrop-blur-xl">
-        <ShineBorder
-          className="absolute inset-0"
-          shineColor={["#3B82F6", "#8B5CF6", "#EC4899", "#3B82F6"]}
-        />
+      <div className="mb-8 flex items-center justify-between rounded-lg px-4 py-2">
         <div>
           <h1 className="text-3xl font-bold text-neutral-50">
             {tag ? `Questions tagged [${tag}]` : "All Questions"}
@@ -61,12 +55,6 @@ export default function QuestionsPage() {
             </p>
           )}
         </div>
-        <Link
-          href="/questions/ask"
-          className="rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-2 font-semibold text-neutral-50 shadow-neutral-950 transition duration-300 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner"
-        >
-          Ask Question
-        </Link>
       </div>
 
       {loading && (

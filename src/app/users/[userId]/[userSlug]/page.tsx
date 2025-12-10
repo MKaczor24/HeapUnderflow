@@ -13,6 +13,7 @@ import Link from "next/link";
 import slugify from "@/helpers/slugify";
 import convertDateToRelativeTime from "@/helpers/relativeTime";
 import ProfileHeader from "@/components/ProfileHeader";
+import UserAvatar from "@/components/UserAvatar";
 
 export default async function ProfilePage({
   params,
@@ -67,6 +68,7 @@ export default async function ProfilePage({
           $id: user.$id,
           name: user.name,
           reputation: prefs.reputation || 0,
+          avatarId: prefs.avatarId,
         },
       } as QuestionWithDetails;
     }),
@@ -126,8 +128,14 @@ export default async function ProfilePage({
                   key={answer.$id}
                   className="relative flex flex-col gap-2 overflow-hidden rounded-xl border border-neutral-50/10 bg-neutral-800 p-4 shadow-md transition duration-300"
                 >
-                  <div className="mb-2 text-sm text-neutral-400">
-                    Answered on{" "}
+                  <div className="mb-2 flex items-center gap-2 text-sm text-neutral-400">
+                    <UserAvatar
+                      avatarId={prefs.avatarId}
+                      name={user.name}
+                      width={24}
+                      height={24}
+                    />
+                    <span>Answered on</span>
                     <Link
                       href={`/questions/${answer.question.$id}/${slugify(answer.question.title)}`}
                       className="text-purple-400 hover:underline"

@@ -51,12 +51,14 @@ export async function GET(request: NextRequest) {
             $id: user.$id,
             name: user.name,
             reputation: prefs?.reputation || 0,
+            avatarId: prefs?.avatarId,
           };
         } catch {
           author = {
             $id: question.authorId,
             name: "Unknown User",
             reputation: 0,
+            avatarId: undefined,
           };
         }
 

@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${ubuntu.className} flex min-h-screen flex-col bg-neutral-950 antialiased`}
+        className={`${ubuntu.className} flex min-h-screen flex-col overflow-x-hidden bg-neutral-950 antialiased`}
       >
         <Toaster
           position="bottom-right"

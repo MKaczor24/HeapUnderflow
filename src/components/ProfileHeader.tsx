@@ -2,10 +2,9 @@
 
 import { useState, useRef } from "react";
 import { useAuthStore, UserPrefs } from "@/store/Auth";
-import { avatars, storage } from "@/models/client/config";
+import { storage } from "@/models/client/config";
 import { avatarsBucket } from "@/models/name";
 import { ShineBorder, Button, Input } from "@/components/ui";
-import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -15,7 +14,9 @@ import {
   IconEdit,
   IconX,
   IconCamera,
+  IconLogout,
 } from "@tabler/icons-react";
+import UserAvatar from "./UserAvatar";
 
 interface ProfileHeaderProps {
   user: Models.User<UserPrefs>;
@@ -32,7 +33,7 @@ export default function ProfileHeader({
   prefs,
   stats,
 }: ProfileHeaderProps) {
-  const { user: loggedInUser } = useAuthStore();
+  const { user: loggedInUser, logout } = useAuthStore();
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -45,6 +46,18 @@ export default function ProfileHeader({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isOwner = loggedInUser?.$id === profileUser.$id;
+
+  const handleLogout = async () => {
+    const toastId = toast.loading("Logging out...");
+    try {
+      await logout();
+      toast.success("Logged out successfully", { id: toastId });
+      router.push("/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+      toast.error("Failed to log out", { id: toastId });
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -110,12 +123,6 @@ export default function ProfileHeader({
     setPreview(null);
   };
 
-  const avatarSrc = preview
-    ? preview
-    : prefs.avatarId
-      ? storage.getFileView(avatarsBucket, prefs.avatarId).toString()
-      : avatars.getInitials(profileUser.name, 128, 128).toString();
-
   return (
     <div className="relative mb-12 flex flex-col items-center gap-6 overflow-hidden rounded-2xl border border-neutral-50/10 bg-neutral-900/50 p-8 text-center shadow-2xl backdrop-blur-xl md:flex-row md:text-left">
       <ShineBorder
@@ -124,11 +131,13 @@ export default function ProfileHeader({
       />
       <div className="relative z-10">
         <div className="group relative h-32 w-32 overflow-hidden rounded-full border-4 border-neutral-800 shadow-xl">
-          <Image
-            src={avatarSrc}
-            alt={profileUser.name}
-            fill
-            className="object-cover"
+          <UserAvatar
+            avatarId={prefs.avatarId}
+            name={profileUser.name}
+            width={128}
+            height={128}
+            previewUrl={preview}
+            className="h-full w-full"
           />
           {isEditing && (
             <div
@@ -222,7 +231,17 @@ export default function ProfileHeader({
       </div>
 
       {isOwner && (
-        <div className="relative z-10 flex gap-2 self-start md:self-center">
+        <div className="relative z-10 flex w-full flex-row items-start justify-center gap-2 self-start md:w-auto md:flex-col md:self-center">
+          {!isEditing && (
+            <Button
+              onClick={handleLogout}
+              size="icon"
+              title="Logout"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-700 bg-neutral-800 p-2 text-neutral-300 hover:bg-neutral-700"
+            >
+              <IconLogout size={20} />
+            </Button>
+          )}
           {isEditing ? (
             <>
               <Button

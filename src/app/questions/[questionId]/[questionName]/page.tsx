@@ -72,6 +72,7 @@ export default async function Page({
           $id: author.$id,
           name: author.name,
           reputation: authorPrefs.reputation || 0,
+          avatarId: authorPrefs.avatarId,
         },
         totalVotes: upvotes.total - downvotes.total,
       };
@@ -86,6 +87,7 @@ export default async function Page({
           $id: author.$id,
           name: author.name,
           reputation: authorPrefs.reputation || 0,
+          avatarId: authorPrefs.avatarId,
         },
         totalVotes: upvotes.total - downvotes.total,
         totalAnswers: answers.total,

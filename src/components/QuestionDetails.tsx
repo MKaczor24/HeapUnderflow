@@ -7,13 +7,14 @@ import Link from "next/link";
 import Image from "next/image";
 import slugify from "@/helpers/slugify";
 import convertDateToRelativeTime from "@/helpers/relativeTime";
-import { avatars, storage } from "@/models/client/config";
+import { storage } from "@/models/client/config";
 import { ShineBorder, Modal } from "./ui";
 import AnswerForm from "./AnswerForm";
 import { useAuthStore } from "@/store/Auth";
 import { IconEdit } from "@tabler/icons-react";
 import { questionAttachmentBucket } from "@/models/name";
 import { useState } from "react";
+import UserAvatar from "./UserAvatar";
 
 export default function QuestionDetails({
   question,
@@ -125,15 +126,11 @@ export default function QuestionDetails({
 
           <div className="flex items-center justify-end gap-2 text-sm text-neutral-400">
             <div className="flex items-center gap-2">
-              <Image
-                src={avatars
-                  .getInitials(question.author.name, 24, 24)
-                  .toString()}
-                alt={question.author.name}
+              <UserAvatar
+                avatarId={question.author.avatarId}
+                name={question.author.name}
                 width={24}
                 height={24}
-                unoptimized
-                className="rounded-full"
               />
               <Link
                 href={`/users/${question.author.$id}/${slugify(question.author.name)}`}
@@ -177,15 +174,11 @@ export default function QuestionDetails({
                 </div>
                 <div className="flex items-center justify-end gap-2 text-sm text-neutral-400">
                   <div className="flex items-center gap-2">
-                    <Image
-                      src={avatars
-                        .getInitials(answer.author.name, 24, 24)
-                        .toString()}
-                      alt={answer.author.name}
+                    <UserAvatar
+                      avatarId={answer.author.avatarId}
+                      name={answer.author.name}
                       width={24}
                       height={24}
-                      unoptimized
-                      className="rounded-full"
                     />
                     <Link
                       href={`/users/${answer.author.$id}/${slugify(answer.author.name)}`}

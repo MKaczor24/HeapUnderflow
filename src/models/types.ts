@@ -12,6 +12,7 @@ export interface Author {
   $id: string;
   name: string;
   reputation: number;
+  avatarId?: string;
 }
 
 export interface QuestionWithDetails extends Question {

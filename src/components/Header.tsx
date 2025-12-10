@@ -99,7 +99,7 @@ export default function Header() {
       }`}
     >
       <div
-        className={`relative flex w-full max-w-7xl items-center justify-between gap-4 overflow-hidden rounded-2xl border border-neutral-50/10 px-4 py-2 shadow-xl backdrop-blur-xl transition-all duration-300 lg:grid lg:grid-cols-3 lg:gap-6 ${
+        className={`relative flex w-full max-w-7xl items-center justify-between gap-4 overflow-hidden rounded-2xl border border-neutral-50/10 px-4 py-2 shadow-xl backdrop-blur-xl transition-all duration-300 ${
           isScrolled ? "bg-neutral-950/50 shadow-2xl" : "bg-neutral-50/5"
         }`}
       >
@@ -107,22 +107,27 @@ export default function Header() {
           shineColor={["#3B82F6", "#8B5CF6", "#EC4899", "#3B82F6"]}
           className="absolute inset-0"
         />
-        <Link href="/" className="group relative z-10 flex items-center gap-2">
-          <Image
-            src="/logo.png"
-            alt="HeapUnderflow logo"
-            width={40}
-            height={40}
-            className="rounded-md transition-transform duration-300 group-hover:scale-115 group-hover:rotate-180"
-          />
-          <span className="relative">
-            <AuroraText className="text-2xl font-bold">
-              HeapUnderflow
-            </AuroraText>
-            <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 transition-all duration-300 group-hover:w-full" />
-          </span>
-        </Link>
-        <nav className="hidden w-full items-center justify-center gap-4 lg:flex">
+        <div className="flex items-center gap-2 lg:flex-1">
+          <Link
+            href="/"
+            className="group relative z-10 flex items-center gap-2"
+          >
+            <Image
+              src="/logo.png"
+              alt="HeapUnderflow logo"
+              width={40}
+              height={40}
+              className="rounded-md transition-transform duration-300 group-hover:scale-115 group-hover:rotate-180"
+            />
+            <span className="relative">
+              <AuroraText className="text-2xl font-bold">
+                HeapUnderflow
+              </AuroraText>
+              <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 transition-all duration-300 group-hover:w-full" />
+            </span>
+          </Link>
+        </div>
+        <nav className="hidden items-center justify-center gap-4 lg:flex">
           {navItems.map((item) => (
             <Link
               key={item.title}
@@ -138,30 +143,30 @@ export default function Header() {
             </Link>
           ))}
         </nav>
-        <div className="hidden w-full flex-row items-end justify-end gap-2 lg:flex">
+        <div className="hidden flex-row items-center justify-end gap-2 lg:flex lg:flex-1">
           <form
-            className="flex max-w-1/2 items-center rounded-full bg-neutral-700/80 px-3 py-1 shadow-inner shadow-neutral-950 focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-0"
+            className="flex w-full max-w-60 items-center rounded-full bg-neutral-700/80 px-3 py-1 shadow-inner shadow-neutral-950 focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-0"
             onSubmit={handleSearch}
           >
-            <IconSearch className="relative z-10 h-4 w-4" />
+            <IconSearch className="relative z-10 h-4 w-4 shrink-0" />
             <input
               type="text"
               name="search"
               placeholder="Search..."
-              className="relative z-10 w-full border-none bg-transparent px-2 py-1 text-neutral-50 outline-none placeholder:text-neutral-400"
+              className="relative z-10 w-full min-w-0 border-none bg-transparent px-2 py-1 text-neutral-50 outline-none placeholder:text-neutral-400"
             />
           </form>
           {session ? (
             <Link
               href="/questions/ask"
-              className="relative z-10 rounded-full border-none bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-2 text-base font-semibold text-neutral-50 shadow-md shadow-neutral-950 transition duration-300 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner"
+              className="relative z-10 shrink-0 rounded-full border-none bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-2 text-base font-semibold text-neutral-50 shadow-md shadow-neutral-950 transition duration-300 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner"
             >
               Ask Question
             </Link>
           ) : (
             <Link
               href="/register"
-              className="relative z-10 rounded-full border-none bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-2 text-base font-semibold text-neutral-50 shadow-md shadow-neutral-950 transition duration-300 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner"
+              className="relative z-10 shrink-0 rounded-full border-none bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-2 text-base font-semibold text-neutral-50 shadow-md shadow-neutral-950 transition duration-300 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner"
             >
               Get Started
             </Link>

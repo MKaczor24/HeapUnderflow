@@ -4,9 +4,8 @@ import { ShineBorder } from "./ui";
 import convertDateToRelativeTime from "@/helpers/relativeTime";
 import Link from "next/link";
 import slugify from "@/helpers/slugify";
-import { avatars } from "@/models/client/config";
+import UserAvatar from "./UserAvatar";
 import { QuestionWithDetails } from "@/models/types";
-import Image from "next/image";
 
 export default function QuestionCard({
   question,
@@ -65,12 +64,11 @@ export default function QuestionCard({
       </div>
 
       <div className="relative flex items-center gap-2 text-sm text-neutral-400">
-        <Image
-          src={avatars.getInitials(question.author.name, 24, 24).toString()}
-          alt={question.author.name}
+        <UserAvatar
+          avatarId={question.author.avatarId}
+          name={question.author.name}
           width={24}
           height={24}
-          className="rounded-full"
         />
         <Link
           href={`/users/${question.author.$id}/${slugify(question.author.name)}`}
