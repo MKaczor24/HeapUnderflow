@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import QuestionCard from "@/components/QuestionCard";
 import { QuestionWithDetails } from "@/models/types";
+import { Spinner } from "@/components/ui/spinner";
 
-export default function QuestionsPage() {
+function QuestionsList() {
   const searchParams = useSearchParams();
   const tag = searchParams.get("tag");
   const search = searchParams.get("search");
@@ -45,7 +46,7 @@ export default function QuestionsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-t-4 border-neutral-600 border-t-purple-500"></div>
+        <Spinner />
       </div>
     );
   }
@@ -86,5 +87,19 @@ export default function QuestionsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function QuestionsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-[50vh] items-center justify-center">
+          <Spinner />
+        </div>
+      }
+    >
+      <QuestionsList />
+    </Suspense>
   );
 }

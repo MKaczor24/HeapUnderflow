@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Models } from "appwrite";
 import { UserPrefs } from "@/store/Auth";
@@ -10,8 +10,9 @@ import slugify from "@/helpers/slugify";
 import UserAvatar from "@/components/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { IconArrowUp, IconMessage2 } from "@tabler/icons-react";
+import { Spinner } from "@/components/ui/spinner";
 
-export default function LeaderboardPage() {
+function LeaderboardContent() {
   const searchParams = useSearchParams();
   const period = searchParams.get("period") || "week";
 
@@ -187,5 +188,19 @@ export default function LeaderboardPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LeaderboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-[50vh] items-center justify-center">
+          <Spinner />
+        </div>
+      }
+    >
+      <LeaderboardContent />
+    </Suspense>
   );
 }

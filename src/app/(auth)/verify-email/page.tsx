@@ -1,11 +1,12 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useAuthStore } from "@/store/Auth";
 import { toast } from "react-hot-toast";
+import { Spinner } from "@/components/ui/spinner";
 
-export default function VerifyEmailPage() {
+function VerifyEmailComponent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -45,5 +46,19 @@ export default function VerifyEmailPage() {
     <div className="flex min-h-screen items-center justify-center text-white">
       <h1 className="text-2xl">{status}</h1>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <Spinner />
+        </div>
+      }
+    >
+      <VerifyEmailComponent />
+    </Suspense>
   );
 }
