@@ -62,6 +62,8 @@ export default function RootLayout({
           }}
         />
         <DotPattern
+          width={32}
+          height={32}
           cx={1}
           cy={1}
           cr={1}

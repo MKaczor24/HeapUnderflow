@@ -5,7 +5,7 @@ import { IconCloud } from "./ui/icon-cloud";
 import { AuroraText } from "./ui/aurora-text";
 import { FlipWords } from "./ui/flip-words";
 import { NumberTicker } from "./ui/number-ticker";
-import { Button } from "./ui";
+import { Button } from "./ui/button";
 import { useAuthStore } from "@/store/Auth";
 import {
   IconMessageQuestion,
