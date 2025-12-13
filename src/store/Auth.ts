@@ -90,6 +90,7 @@ export const useAuthStore = create<IAuthStore>()(
               reputation: 0,
               theme: "dark",
               bio: "",
+              avatarId: "",
             };
             await account.updatePrefs<UserPrefs>(defaultPrefs);
             user.prefs = defaultPrefs;
@@ -128,6 +129,7 @@ export const useAuthStore = create<IAuthStore>()(
               reputation: 0,
               theme: "dark",
               bio: "",
+              avatarId: "",
             };
             await account.updatePrefs<UserPrefs>(defaultPrefs);
             user.prefs = defaultPrefs;
@@ -146,11 +148,11 @@ export const useAuthStore = create<IAuthStore>()(
         try {
           await axios.post("/api/auth/register", { name, email, password });
           return { success: true };
-        } catch (error: any) {
+        } catch (error: AppwriteException | unknown) {
           console.error("Account creation error:", error);
           return {
             success: false,
-            error: error?.response?.data?.error || error,
+            error: error as AppwriteException | null,
           };
         }
       },

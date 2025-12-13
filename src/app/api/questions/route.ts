@@ -182,13 +182,27 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const { questionId } = await request.json();
+    const { questionId, userId } = await request.json();
 
     const question = await databases.getDocument(
       db,
       questionCollection,
       questionId,
     );
+
+    if (userId) {
+      const user = await users.get(userId);
+      if (question.authorId !== userId && !user.labels.includes("admin")) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+      }
+    } else {
+      // Fallback for existing calls that might not send userId yet,
+      // though we should enforce it.
+      // For now, let's enforce it to be safe, or assume if no userId is sent, it's unauthorized.
+      // But to avoid breaking existing functionality immediately if I miss a spot,
+      // I'll return 403 if userId is missing.
+      return NextResponse.json({ error: "User ID required" }, { status: 400 });
+    }
 
     // 1. Delete Question Votes
     const questionVotes = await databases.listDocuments(db, voteCollection, [

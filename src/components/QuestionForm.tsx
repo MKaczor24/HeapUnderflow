@@ -142,11 +142,11 @@ export default function QuestionForm({ question }: { question?: Question }) {
   };
 
   const deleteQuestion = async () => {
-    if (!question) return;
+    if (!question || !user) return;
 
     try {
       await axios.delete("/api/questions", {
-        data: { questionId: question.$id },
+        data: { questionId: question.$id, userId: user.$id },
       });
 
       router.push("/questions");

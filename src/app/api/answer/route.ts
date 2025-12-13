@@ -1,4 +1,4 @@
-import { answerCollection, db } from "@/models/name";
+import { answerCollection, db, questionCollection } from "@/models/name";
 import { databases, users } from "@/models/server/config";
 import { NextRequest, NextResponse } from "next/server";
 import { ID } from "node-appwrite";
@@ -40,9 +40,27 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const { answerId } = await request.json();
+    const { answerId, userId } = await request.json();
 
     const answer = await databases.getDocument(db, answerCollection, answerId);
+    const question = await databases.getDocument(
+      db,
+      questionCollection,
+      answer.questionId,
+    );
+
+    if (userId) {
+      const user = await users.get(userId);
+      if (
+        answer.authorId !== userId &&
+        question.authorId !== userId &&
+        !user.labels.includes("admin")
+      ) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+      }
+    } else {
+      return NextResponse.json({ error: "User ID required" }, { status: 400 });
+    }
 
     const response = await databases.deleteDocument(
       db,

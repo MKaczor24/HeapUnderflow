@@ -42,6 +42,14 @@ export default function QuestionsPage() {
     fetchQuestions();
   }, [tag, search]);
 
+  if (loading) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-t-4 border-neutral-600 border-t-purple-500"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-8 flex items-center justify-between rounded-lg px-4 py-2">
@@ -56,12 +64,6 @@ export default function QuestionsPage() {
           )}
         </div>
       </div>
-
-      {loading && (
-        <div className="flex items-center justify-center py-12">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-purple-500 border-t-transparent" />
-        </div>
-      )}
 
       {error && (
         <div className="rounded-lg border border-red-500/50 bg-red-500/10 p-4 text-red-400">

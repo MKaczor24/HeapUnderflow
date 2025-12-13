@@ -1,98 +1,58 @@
-import { databases, users } from "@/models/server/config";
-import {
-  answerCollection,
-  db,
-  questionCollection,
-  voteCollection,
-} from "@/models/name";
-import { Query } from "node-appwrite";
-import { UserPrefs } from "@/store/Auth";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import QuestionDetails from "@/components/QuestionDetails";
-import { Answer, Question } from "@/models/types";
+import { AnswerWithDetails, QuestionWithDetails } from "@/models/types";
+import { Spinner } from "@/components/ui/spinner";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ questionId: string; questionName: string }>;
-}) {
-  const { questionId } = await params;
+export default function Page() {
+  const { questionId } = useParams();
 
-  const question = await databases.getDocument(
-    db,
-    questionCollection,
-    questionId,
-  );
+  const [question, setQuestion] = useState<QuestionWithDetails | null>(null);
+  const [answers, setAnswers] = useState<AnswerWithDetails[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const author = await users.get(question.authorId);
-  const authorPrefs = await users.getPrefs<UserPrefs>(question.authorId);
+  useEffect(() => {
+    async function fetchData() {
+      if (!questionId) return;
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/questions/${questionId}`);
+        const data = await response.json();
+        if (response.ok) {
+          setQuestion(data.question);
+          setAnswers(data.answers);
+        } else {
+          setError(data.error || "Failed to fetch question");
+        }
+      } catch (error) {
+        setError("Failed to fetch question");
+        console.error("Failed to fetch question data", error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  const [upvotes, downvotes] = await Promise.all([
-    databases.listDocuments(db, voteCollection, [
-      Query.equal("type", "question"),
-      Query.equal("typeId", questionId),
-      Query.equal("voteStatus", "upvoted"),
-      Query.limit(1),
-    ]),
-    databases.listDocuments(db, voteCollection, [
-      Query.equal("type", "question"),
-      Query.equal("typeId", questionId),
-      Query.equal("voteStatus", "downvoted"),
-      Query.limit(1),
-    ]),
-  ]);
+    fetchData();
+  }, [questionId]);
 
-  const answers = await databases.listDocuments(db, answerCollection, [
-    Query.equal("questionId", questionId),
-    Query.orderDesc("$createdAt"),
-  ]);
+  if (loading) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
 
-  const enrichedAnswers = await Promise.all(
-    answers.documents.map(async (doc) => {
-      const answer = doc as unknown as Answer;
-      const author = await users.get(answer.authorId);
-      const authorPrefs = await users.getPrefs<UserPrefs>(answer.authorId);
-      const [upvotes, downvotes] = await Promise.all([
-        databases.listDocuments(db, voteCollection, [
-          Query.equal("type", "answer"),
-          Query.equal("typeId", answer.$id),
-          Query.equal("voteStatus", "upvoted"),
-          Query.limit(1),
-        ]),
-        databases.listDocuments(db, voteCollection, [
-          Query.equal("type", "answer"),
-          Query.equal("typeId", answer.$id),
-          Query.equal("voteStatus", "downvoted"),
-          Query.limit(1),
-        ]),
-      ]);
+  if (error || !question) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center text-neutral-400">
+        {error || "Question not found"}
+      </div>
+    );
+  }
 
-      return {
-        ...answer,
-        author: {
-          $id: author.$id,
-          name: author.name,
-          reputation: authorPrefs.reputation || 0,
-          avatarId: authorPrefs.avatarId,
-        },
-        totalVotes: upvotes.total - downvotes.total,
-      };
-    }),
-  );
-
-  return (
-    <QuestionDetails
-      question={{
-        ...(question as unknown as Question),
-        author: {
-          $id: author.$id,
-          name: author.name,
-          reputation: authorPrefs.reputation || 0,
-          avatarId: authorPrefs.avatarId,
-        },
-        totalVotes: upvotes.total - downvotes.total,
-        totalAnswers: answers.total,
-      }}
-      answers={enrichedAnswers}
-    />
-  );
+  return <QuestionDetails question={question} answers={answers} />;
 }

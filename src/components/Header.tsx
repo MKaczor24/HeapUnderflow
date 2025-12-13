@@ -27,9 +27,9 @@ export default function Header() {
 
   const pathname = usePathname();
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [isClosing, setIsClosing] = useState<boolean>(false);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   useEffect(() => {
     const handleScroll = () => {

@@ -11,10 +11,13 @@ import { storage } from "@/models/client/config";
 import { ShineBorder, Modal } from "./ui";
 import AnswerForm from "./AnswerForm";
 import { useAuthStore } from "@/store/Auth";
-import { IconEdit } from "@tabler/icons-react";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { questionAttachmentBucket } from "@/models/name";
 import { useState } from "react";
 import UserAvatar from "./UserAvatar";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 export default function QuestionDetails({
   question,
@@ -24,9 +27,26 @@ export default function QuestionDetails({
   answers: AnswerWithDetails[];
 }) {
   const { user } = useAuthStore();
+  const router = useRouter();
+  const isAdmin = user?.labels?.includes("admin");
   const isAuthor = user && user.$id === question.author.$id;
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const deleteAnswer = async (answerId: string) => {
+    if (!user) return;
+    if (!window.confirm("Are you sure you want to delete this answer?")) return;
+    try {
+      await axios.delete("/api/answer", {
+        data: { answerId, userId: user.$id },
+      });
+      toast.success("Answer deleted successfully");
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to delete answer", error);
+      toast.error("Failed to delete answer");
+    }
+  };
 
   const getTagColor = (index: number) => {
     const colors = [
@@ -54,7 +74,7 @@ export default function QuestionDetails({
             <h1 className="text-3xl font-bold text-neutral-50">
               {question.title}
             </h1>
-            {isAuthor && (
+            {(isAuthor || isAdmin) && (
               <Link
                 href={`/questions/${question.$id}/${slugify(question.title)}/edit`}
                 className="flex shrink-0 items-center gap-2 rounded-full border border-neutral-700 bg-neutral-800/50 px-4 py-1.5 text-sm font-medium text-neutral-400 transition hover:bg-neutral-800 hover:text-neutral-200"
@@ -172,28 +192,43 @@ export default function QuestionDetails({
                     style={{ background: "transparent", color: "inherit" }}
                   />
                 </div>
-                <div className="flex items-center justify-end gap-2 text-sm text-neutral-400">
-                  <div className="flex items-center gap-2">
-                    <UserAvatar
-                      avatarId={answer.author.avatarId}
-                      name={answer.author.name}
-                      width={24}
-                      height={24}
-                    />
-                    <Link
-                      href={`/users/${answer.author.$id}/${slugify(answer.author.name)}`}
-                      className="text-purple-400 hover:underline"
+                <div className="flex items-center justify-between gap-2">
+                  {user &&
+                  (user.$id === answer.author.$id ||
+                    user.$id === question.author.$id ||
+                    isAdmin) ? (
+                    <button
+                      onClick={() => deleteAnswer(answer.$id)}
+                      className="flex items-center gap-1 text-sm text-red-500 hover:text-red-400"
                     >
-                      {answer.author.name}
-                    </Link>
-                    <span className="text-neutral-500">
-                      ({answer.author.reputation} rep)
+                      <IconTrash size={14} /> Delete
+                    </button>
+                  ) : (
+                    <div />
+                  )}
+                  <div className="flex items-center justify-end gap-2 text-sm text-neutral-400">
+                    <div className="flex items-center gap-2">
+                      <UserAvatar
+                        avatarId={answer.author.avatarId}
+                        name={answer.author.name}
+                        width={24}
+                        height={24}
+                      />
+                      <Link
+                        href={`/users/${answer.author.$id}/${slugify(answer.author.name)}`}
+                        className="text-purple-400 hover:underline"
+                      >
+                        {answer.author.name}
+                      </Link>
+                      <span className="text-neutral-500">
+                        ({answer.author.reputation} rep)
+                      </span>
+                    </div>
+                    <span suppressHydrationWarning>
+                      answered{" "}
+                      {convertDateToRelativeTime(new Date(answer.$createdAt))}
                     </span>
                   </div>
-                  <span suppressHydrationWarning>
-                    answered{" "}
-                    {convertDateToRelativeTime(new Date(answer.$createdAt))}
-                  </span>
                 </div>
               </div>
             </div>
