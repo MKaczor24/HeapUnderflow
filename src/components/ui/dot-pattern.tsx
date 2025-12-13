@@ -36,7 +36,13 @@ export function DotPattern({
     if (!ctx) return;
 
     let animationFrameId: number;
-    let dots: { x: number; y: number; opacity: number; speed: number; offset: number }[] = [];
+    let dots: {
+      x: number;
+      y: number;
+      opacity: number;
+      speed: number;
+      offset: number;
+    }[] = [];
 
     const resize = () => {
       const { innerWidth, innerHeight } = window;
@@ -68,7 +74,7 @@ export function DotPattern({
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       // Use the color from the class or default to neutral-400
       // We'll use a fixed color for performance, assuming the class sets the base tone
       ctx.fillStyle = "rgb(163 163 163)"; // neutral-400
@@ -80,10 +86,10 @@ export function DotPattern({
 
         if (glow) {
           // Sine wave for glowing effect: oscillates between 0.2 and 0.6
-          // Math.sin returns -1 to 1. 
+          // Math.sin returns -1 to 1.
           // (Math.sin(...) + 1) / 2 returns 0 to 1.
           const wave = (Math.sin(time * dot.speed + dot.offset) + 1) / 2;
-          opacity = 0.2 + wave * 0.4; 
+          opacity = 0.2 + wave * 0.4;
         }
 
         ctx.globalAlpha = opacity;
@@ -108,7 +114,10 @@ export function DotPattern({
   return (
     <canvas
       ref={canvasRef}
-      className={cn("pointer-events-none absolute inset-0 h-full w-full", className)}
+      className={cn(
+        "pointer-events-none absolute inset-0 h-full w-full",
+        className,
+      )}
       aria-hidden="true"
     />
   );
