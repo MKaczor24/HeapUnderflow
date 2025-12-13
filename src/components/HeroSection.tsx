@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { IconCloud } from "./ui/icon-cloud";
 import { AuroraText } from "./ui/aurora-text";
 import { FlipWords } from "./ui/flip-words";
@@ -15,6 +16,17 @@ import Link from "next/link";
 
 export default function HeroSectionHeader() {
   const { session } = useAuthStore();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768); // md breakpoint
+    };
+
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
 
   const slugs = [
     "typescript",
@@ -151,7 +163,7 @@ export default function HeroSectionHeader() {
 
           <div className="flex items-center justify-center">
             <div className="relative hidden w-full max-w-sm md:flex">
-              <IconCloud images={images} />
+              {isDesktop && <IconCloud images={images} />}
               <div className="absolute inset-0 -z-10 items-center justify-center blur-3xl">
                 <div className="h-full w-full rounded-full bg-linear-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20" />
               </div>
