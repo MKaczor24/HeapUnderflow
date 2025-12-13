@@ -219,7 +219,7 @@ export default function QuestionForm({ question }: { question?: Question }) {
           id="title"
           name="title"
           value={formData.title}
-          placeholder="e.g. Dlaczego Walkowiak kurwą jest?"
+          placeholder="e.g. How do I fix error:any warning?"
           type="text"
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, title: e.target.value }))

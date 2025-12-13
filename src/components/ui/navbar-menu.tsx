@@ -37,16 +37,13 @@ export const MenuItem = ({
           transition={transition}
         >
           {active === item && (
-            <div className="absolute top-[calc(100%_+_1.2rem)] left-1/2 -translate-x-1/2 transform pt-4">
+            <div className="absolute top-[calc(100%+1.2rem)] left-1/2 -translate-x-1/2 transform pt-4">
               <motion.div
                 transition={transition}
-                layoutId="active" // layoutId ensures smooth animation
-                className="overflow-hidden rounded-2xl border border-black/[0.2] bg-white shadow-xl backdrop-blur-sm dark:border-white/[0.2] dark:bg-black"
+                layoutId="active"
+                className="overflow-hidden rounded-2xl border border-black/20 bg-white shadow-xl backdrop-blur-sm dark:border-white/20 dark:bg-black"
               >
-                <motion.div
-                  layout // layout ensures smooth animation
-                  className="h-full w-max p-4"
-                >
+                <motion.div layout className="h-full w-max p-4">
                   {children}
                 </motion.div>
               </motion.div>
@@ -88,6 +85,7 @@ export const ProductItem = ({
 }) => {
   return (
     <a href={href} className="flex space-x-2">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         width={140}
@@ -99,7 +97,7 @@ export const ProductItem = ({
         <h4 className="mb-1 text-xl font-bold text-black dark:text-white">
           {title}
         </h4>
-        <p className="max-w-[10rem] text-sm text-neutral-700 dark:text-neutral-300">
+        <p className="max-w-40 text-sm text-neutral-700 dark:text-neutral-300">
           {description}
         </p>
       </div>
