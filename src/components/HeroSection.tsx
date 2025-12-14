@@ -20,7 +20,7 @@ export default function HeroSectionHeader() {
 
   useEffect(() => {
     const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 768); // md breakpoint
+      setIsDesktop(window.innerWidth >= 768);
     };
 
     checkDesktop();
