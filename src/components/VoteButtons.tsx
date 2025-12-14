@@ -45,7 +45,10 @@ export default function VoteButtons({
   }, [user, type, id]);
 
   const handleVote = async (status: "upvoted" | "downvoted") => {
-    if (!user || isVoting) return;
+    if (!user || isVoting) {
+      toast.error("Please log in to vote");
+      return;
+    }
     setIsVoting(true);
 
     const prevStatus = voteStatus;
