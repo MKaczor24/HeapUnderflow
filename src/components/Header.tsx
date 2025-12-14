@@ -2,7 +2,16 @@
 
 import { useAuthStore } from "@/store/Auth";
 import slugify from "@/helpers/slugify";
-import { IconHome, IconWorldQuestion, IconLogin, IconUser, IconSearch, IconLaurelWreath, IconMenu2, IconX } from "@tabler/icons-react";
+import {
+  IconHome,
+  IconWorldQuestion,
+  IconLogin,
+  IconUser,
+  IconSearch,
+  IconLaurelWreath,
+  IconMenu2,
+  IconX,
+} from "@tabler/icons-react";
 import { ShineBorder } from "./ui/shine-border";
 import { AuroraText } from "./ui/aurora-text";
 import Image from "next/image";
