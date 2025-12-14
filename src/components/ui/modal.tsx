@@ -48,7 +48,7 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 rounded-full p-1 text-neutral-400 transition hover:bg-neutral-800 hover:text-neutral-100"
+          className="absolute top-4 right-4 z-50 rounded-full p-1 text-neutral-400 transition hover:bg-neutral-800 hover:text-neutral-100"
         >
           <IconX size={20} />
           <span className="sr-only">Close</span>

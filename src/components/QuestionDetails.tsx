@@ -125,7 +125,7 @@ export default function QuestionDetails({
                     .toString()}
                   alt="Full Attachment"
                   fill
-                  className="rounded-md object-contain"
+                  className="rounded-xl object-contain"
                   unoptimized
                 />
               </div>
