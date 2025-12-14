@@ -8,10 +8,19 @@ import { users } from "@/models/server/config";
 import { databases } from "@/models/server/config";
 import { NextResponse, NextRequest } from "next/server";
 import { Query } from "node-appwrite";
-import { UserPrefs } from "@/store/Auth";
+import { UserPrefs, useAuthStore } from "@/store/Auth";
 import { ID } from "appwrite";
 
 export async function POST(request: NextRequest) {
+  const { session } = useAuthStore.getState();
+
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized. Please log in to vote." },
+      { status: 401 },
+    );
+  }
+
   try {
     const { votedById, voteStatus, type, typeId } = await request.json();
 
@@ -48,17 +57,12 @@ export async function POST(request: NextRequest) {
     }
 
     if (response.documents[0]?.voteStatus !== voteStatus) {
-      const newVote = await databases.createDocument(
-        db,
-        voteCollection,
-        ID.unique(),
-        {
-          type,
-          typeId,
-          voteStatus,
-          votedById,
-        },
-      );
+      await databases.createDocument(db, voteCollection, ID.unique(), {
+        type,
+        typeId,
+        voteStatus,
+        votedById,
+      });
 
       const QuestionOrAnswer = await databases.getDocument(
         db,
