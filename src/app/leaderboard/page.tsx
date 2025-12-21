@@ -45,7 +45,7 @@ function LeaderboardContent() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-t-4 border-neutral-600 border-t-purple-500"></div>
+        <Spinner className="h-12 w-12" />
       </div>
     );
   }
