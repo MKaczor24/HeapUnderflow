@@ -17,6 +17,7 @@ import {
   IconLogout,
 } from "@tabler/icons-react";
 import UserAvatar from "./UserAvatar";
+import Link from "next/link";
 
 interface ProfileHeaderProps {
   user: Models.User<UserPrefs>;
@@ -26,12 +27,14 @@ interface ProfileHeaderProps {
     questions: number;
     answers: number;
   };
+  isVerified: boolean;
 }
 
 export default function ProfileHeader({
   user: profileUser,
   prefs,
   stats,
+  isVerified,
 }: ProfileHeaderProps) {
   const { user: loggedInUser, logout } = useAuthStore();
   const router = useRouter();
@@ -229,6 +232,23 @@ export default function ProfileHeader({
           </div>
         </div>
       </div>
+
+      {isOwner && !isVerified && (
+        <div className="text-center">
+          <span className="inline-block max-w-xs rounded-full bg-neutral-800 px-4 py-2 text-sm font-medium text-neutral-50 shadow-md">
+            Your account is{" "}
+            <strong className="text-pink-500">not verified</strong>, please
+            check your email. If your link expired{" "}
+            <Link
+              href="/resend-verification"
+              className="text-purple-400 hover:underline"
+            >
+              click here
+            </Link>{" "}
+            to resend the verification email.
+          </span>
+        </div>
+      )}
 
       {isOwner && (
         <div className="relative z-10 flex w-full flex-row items-start justify-center gap-2 self-start md:w-auto md:flex-col md:self-center">

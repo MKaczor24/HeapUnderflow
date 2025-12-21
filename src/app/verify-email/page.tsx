@@ -36,15 +36,19 @@ function VerifyEmailComponent() {
 
   if (!userId || !secret) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-white">
-        <h1 className="text-2xl">Invalid verification link.</h1>
+      <div className="flex items-center justify-center text-neutral-50">
+        <div className="w-full max-w-md space-y-8 rounded-2xl border border-neutral-800 bg-neutral-900 p-8 shadow-xl">
+          <h1 className="text-2xl">Invalid verification link.</h1>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center text-white">
-      <h1 className="text-2xl">{status}</h1>
+    <div className="flex items-center justify-center text-neutral-50">
+      <div className="w-full max-w-md space-y-8 rounded-2xl border border-neutral-800 bg-neutral-900 p-8 shadow-xl">
+        <h1 className="text-2xl">{status}</h1>
+      </div>
     </div>
   );
 }
@@ -53,7 +57,7 @@ export default function VerifyEmailPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center">
+        <div className="flex items-center justify-center">
           <Spinner />
         </div>
       }

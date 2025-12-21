@@ -14,7 +14,7 @@ import { Spinner } from "@/components/ui/spinner";
 import UserAvatar from "@/components/UserAvatar";
 
 export default function ProfilePage() {
-  const { userId, userSlug } = useParams();
+  const { userId } = useParams();
 
   const [user, setUser] = useState<Models.User<UserPrefs> | null>(null);
   const [prefs, setPrefs] = useState<UserPrefs | null>(null);
@@ -24,6 +24,7 @@ export default function ProfilePage() {
   );
   const [stats, setStats] = useState({ questions: 0, answers: 0 });
   const [loading, setLoading] = useState(true);
+  const [isVerified, setIsVerified] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -38,6 +39,7 @@ export default function ProfilePage() {
           setQuestions(data.questions);
           setAnswers(data.answers);
           setStats(data.stats);
+          setIsVerified(data.user.emailVerification || false);
         }
       } catch (error) {
         console.error("Failed to fetch user data", error);
@@ -75,6 +77,7 @@ export default function ProfilePage() {
           questions: stats.questions,
           answers: stats.answers,
         }}
+        isVerified={isVerified}
       />
 
       <div className="grid gap-8 md:grid-cols-2">
