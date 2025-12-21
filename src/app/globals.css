@@ -225,7 +225,7 @@ input[type="file"]::-webkit-file-upload-button {
   line-height: 1;
   height: auto;
   box-sizing: border-box;
-  border-radius: 0.375rem;
+  border-radius: 9999px;
   cursor: pointer;
 }
 
