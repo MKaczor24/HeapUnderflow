@@ -8,21 +8,20 @@ import { users } from "@/models/server/config";
 import { databases } from "@/models/server/config";
 import { NextResponse, NextRequest } from "next/server";
 import { Query } from "node-appwrite";
-import { UserPrefs, useAuthStore } from "@/store/Auth";
+import { UserPrefs } from "@/store/Auth";
 import { ID } from "appwrite";
 
 export async function POST(request: NextRequest) {
-  const { session } = useAuthStore.getState();
-
-  if (!session) {
-    return NextResponse.json(
-      { error: "Unauthorized. Please log in to vote." },
-      { status: 401 },
-    );
-  }
-
   try {
     const { votedById, voteStatus, type, typeId } = await request.json();
+
+    const user = await users.get(votedById);
+    if (!user.emailVerification) {
+      return NextResponse.json(
+        { error: "Email verification required to vote." },
+        { status: 403 },
+      );
+    }
 
     const response = await databases.listDocuments(db, voteCollection, [
       Query.equal("votedById", votedById),
