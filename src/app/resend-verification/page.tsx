@@ -71,7 +71,7 @@ export default function ResendVerificationPage() {
             <Button
               onClick={handleResend}
               disabled={loading}
-              className="w-full rounded-xl bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 py-6 text-lg font-semibold text-neutral-50 shadow-lg shadow-neutral-950 transition duration-300 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 py-6 text-lg font-semibold text-neutral-50 shadow-lg shadow-neutral-950 transition duration-300 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">

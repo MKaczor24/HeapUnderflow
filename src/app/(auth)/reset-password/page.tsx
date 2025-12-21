@@ -79,7 +79,7 @@ function ResetPasswordForm() {
           </p>
           <Button
             onClick={() => router.push("/login")}
-            className="w-full rounded-xl bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-3 font-semibold transition hover:from-blue-600 hover:via-purple-600 hover:to-pink-600"
+            className="w-full rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-3 font-semibold transition hover:from-blue-600 hover:via-purple-600 hover:to-pink-600"
           >
             Back to Login
           </Button>
@@ -146,7 +146,7 @@ function ResetPasswordForm() {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full rounded-xl bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-3 font-semibold transition hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 disabled:opacity-50"
+            className="w-full rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-3 font-semibold transition hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 disabled:opacity-50"
           >
             {isLoading ? "Resetting..." : "Reset Password"}
           </Button>

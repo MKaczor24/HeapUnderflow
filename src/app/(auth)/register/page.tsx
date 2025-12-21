@@ -203,7 +203,7 @@ export default function RegisterPage() {
           <Button
             type="submit"
             disabled={isLoading}
-            className="mt-2 w-full rounded-xl bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 py-3 text-lg font-semibold text-neutral-50 shadow-lg shadow-neutral-950 transition duration-300 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-50"
+            className="mt-2 w-full rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 py-3 text-lg font-semibold text-neutral-50 shadow-lg shadow-neutral-950 transition duration-300 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading ? (
               <span className="flex items-center justify-center gap-2">

@@ -60,15 +60,21 @@ interface IAuthStore {
     success: boolean;
     error?: AppwriteException | null;
   }>;
+  checkVerified(): boolean;
 }
 
 export const useAuthStore = create<IAuthStore>()(
   persist(
-    immer((set) => ({
+    immer((set, get) => ({
       session: null,
       jwt: null,
       user: null,
       hydrated: false,
+
+      checkVerified() {
+        const user = get().user;
+        return !!user?.emailVerification;
+      },
 
       setHydrated() {
         set({ hydrated: true });

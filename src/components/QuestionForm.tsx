@@ -422,7 +422,7 @@ export default function QuestionForm({ question }: { question?: Question }) {
       </div>
 
       <Button
-        className={`z-10 w-full rounded-xl bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-16 py-8 text-xl shadow-md shadow-neutral-950 transition duration-300 hover:cursor-pointer hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner ${Array.from(formData.tags).length > 0 ? "md:h-auto" : ""}`}
+        className={`z-10 w-full rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-16 py-8 text-xl shadow-md shadow-neutral-950 transition duration-300 hover:cursor-pointer hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner ${Array.from(formData.tags).length > 0 ? "md:h-auto" : ""}`}
         type="submit"
         disabled={loading}
       >

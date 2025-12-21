@@ -7,10 +7,11 @@ import { useRouter } from "next/navigation";
 import { Button } from "./ui";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import Link from "next/link";
 
 export default function AnswerForm({ questionId }: { questionId: string }) {
   const [content, setContent] = useState("");
-  const { user } = useAuthStore();
+  const { user, checkVerified } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -37,6 +38,24 @@ export default function AnswerForm({ questionId }: { questionId: string }) {
   };
 
   if (!user) return null;
+
+  if (!checkVerified()) {
+    return (
+      <div className="mt-8 flex flex-col items-center justify-center gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-8 text-center">
+        <h3 className="text-xl font-bold text-neutral-50">
+          Verify your email to answer
+        </h3>
+        <p className="text-neutral-400">
+          You must verify your email address before you can post answers.
+        </p>
+        <Link href="/resend-verification">
+          <Button className="rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 px-8 py-3 text-lg font-semibold text-neutral-50 shadow-lg shadow-neutral-950 transition duration-300 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-inner">
+            Verify Email
+          </Button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-8">
