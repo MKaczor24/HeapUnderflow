@@ -54,7 +54,7 @@ export default function Footer() {
               className="group relative z-10 flex items-center gap-2"
             >
               <Image
-                src="/logo.png"
+                src="public/logo.svg"
                 alt="HeapUnderflow logo"
                 width={40}
                 height={40}
