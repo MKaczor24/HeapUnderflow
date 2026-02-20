@@ -12,6 +12,8 @@ A community-driven Q&A platform for developers — inspired by Stack Overflow, b
 
 HeapUnderflow is a full-stack Q&A web application where users can ask technical questions, post answers, and vote on content. It features a modern dark-themed UI with smooth animations and a fully responsive layout.
 
+This project was originally inspired by and started as part of a Udemy course. Since then, it has been significantly expanded and further developed by me, incorporating my own ideas, features, and design improvements.
+
 This is a **non-commercial** project built for learning purposes and portfolio demonstration.
 
 ## Features
